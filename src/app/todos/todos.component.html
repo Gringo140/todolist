@@ -1,0 +1,22 @@
+<ion-toolbar color="tertiary">
+    <ion-buttons slot="end">
+        <!--         <ion-select class="link" interface="popover">
+            <a >Create</a>
+            <ion-select-option value="create">    
+            </ion-select-option>
+            <ion-select-option>Detail</ion-select-option>
+            <ion-select-option>List</ion-select-option>
+        </ion-select>
+        <ion-icon slot="icon-only" ios="ellipsis-vertical" md="ellipsis-vertical">
+            </ion-icon> -->
+        <ion-button routerLink="">
+            <ion-icon name="list-outline"></ion-icon>
+        </ion-button>
+        <ion-button routerLink="create" class="ellipsis">
+            <ion-icon name="add-outline"></ion-icon>
+        </ion-button>
+    </ion-buttons>
+    <ion-title>TodoList</ion-title>
+</ion-toolbar>
+
+<ion-router-outlet></ion-router-outlet>

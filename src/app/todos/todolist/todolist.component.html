@@ -1,0 +1,34 @@
+<div *ngIf="!todolist && !error else notFound">
+    <div class="spinner-container">
+        <div class="spinner" name="crescent">
+            <span class="spinner-ball"></span>
+        </div>
+    </div>
+</div>
+<ng-template #notFound>
+
+    <ion-button class="retry" *ngIf="error" (click)="retry()">Retry
+        <ion-icon name="refresh-outline"></ion-icon>
+    </ion-button>
+</ng-template>
+
+<!-- <ion-content>
+    <ion-infinite-scroll> -->
+<div class="todo" *ngFor="let value of todolist, let i=index" #list>
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <span size="6" size-sm="12">
+                    <h5 class="title">Titre {{i +1}}: </h5>
+                    <p>{{value.name}}</p><br>
+                    <h5 class="desc">Description: </h5>
+                    <p>{{value.description}}</p></span><br>
+                <ion-icon name="trash-outline" (click)="delete(value)"></ion-icon>
+                <ion-item class="divider">
+                </ion-item>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</div>
+<!--     </ion-infinite-scroll>
+    </ion-content> -->

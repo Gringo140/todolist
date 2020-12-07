@@ -1,0 +1,14 @@
+<form class="form" [formGroup]="formTodo" (ngSubmit)="save()">
+    <ion-item>
+        <ion-label class="font"><b>Title: </b></ion-label>
+        <ion-input type="text" formControlName="name"></ion-input>
+        <span class="required" *ngIf="!formTodo.get('name').valid && formTodo.get('name').dirty">
+            <b>Name is required</b>
+        </span>
+    </ion-item>
+    <ion-item>
+        <ion-label class="font"><b>Description: </b></ion-label>
+        <ion-textarea formControlName="description"></ion-textarea>
+    </ion-item>
+    <ion-button [disabled]="!this.formTodo.valid" ion-button type="submit">Save</ion-button>
+</form>
