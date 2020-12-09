@@ -1,30 +1,31 @@
-<div *ngIf="!todolist && !error else notFound">
-    <div class="spinner-container">
-        <div class="spinner" name="crescent">
-            <span class="spinner-ball"></span>
-        </div>
-    </div>
-</div>
-<ng-template #notFound>
+<ion-grid>
+    <ion-row>
+        <ion-col>
+            <div *ngIf="!todolist && !error else notFound">
+                <div class="spinner-container">
+                    <div class="spinner" name="crescent">
+                        <span class="spinner-ball"></span>
+                    </div>
+                </div>
+            </div>
+            <ng-template #notFound>
+                <ion-button class="retry" *ngIf="error" (click)="retry()">Retry
+                    <ion-icon name="refresh-outline"></ion-icon>
+                </ion-button>
+            </ng-template>
 
-    <ion-button class="retry" *ngIf="error" (click)="retry()">Retry
-        <ion-icon name="refresh-outline"></ion-icon>
-    </ion-button>
-</ng-template>
-
-<div class="todo" *ngFor="let value of todolist, let i=index" #list>
-    <ion-grid>
-        <ion-row>
-            <ion-col>
+            <div class="todo" *ngFor="let value of todolist, let i=index" #list>
                 <span size="6" size-sm="12">
                     <h5 class="title">Titre {{i +1}}: </h5>
                     <p>{{value.name}}</p><br>
                     <h5 class="desc">Description: </h5>
                     <p>{{value.description}}</p></span><br>
-                <ion-icon name="trash-outline" (click)="delete(value)"></ion-icon>
+                <ion-button [disabled]="index == i" (click)="delete(value, i)">
+                    <ion-icon name="trash-outline"></ion-icon>
+                </ion-button>
                 <ion-item class="divider">
                 </ion-item>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
-</div>
+            </div>
+        </ion-col>
+    </ion-row>
+</ion-grid>

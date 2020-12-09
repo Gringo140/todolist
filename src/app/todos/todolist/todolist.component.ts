@@ -9,22 +9,26 @@ import { TodoComponent } from '../todo/todo.component';
   templateUrl: './todolist.component.html',
   styleUrls: ['./todolist.component.scss'],
 })
-export class TodolistComponent {
+export class TodolistComponent implements OnInit {
 
   public todolist: Todo[];
   public error: boolean;
+  public disabled: boolean;
+  public index: number;
 
-  constructor(private service: TodoServiceService) {
+  constructor(private service: TodoServiceService) { }
+
+  ngOnInit (){  
     this.retry();
-
-  }
+    this.error = false;
+   }
 
   retry(): void {
+    
     this.service.get().subscribe(
-      (todoList: Todo[]) => {
+      (todoList: Todo[]) => {        
         this.error = false;
         this.todolist = todoList;
-        this.service.todoList = this.todolist;
       },
       () => {
         this.error = true;
@@ -32,26 +36,16 @@ export class TodolistComponent {
     );
   }
 
-  
-
-  delete(todo: Todo) {
-    const newTodoList = [];
-
-    this.todolist.forEach(element => {
-      if (element !== todo) {
-        newTodoList.push(element)
-      }
-    });
-
-    this.service.put(newTodoList).subscribe(
+  delete(todo: Todo, index: number) {
+    this.index = index;
+    this.disabled = true;
+     this.service.delete(todo).subscribe(
       () => {
-        const index = this.service.todoList.indexOf(todo);
-        this.service.todoList.splice(index, 1);
+        this.index = null;
+        this.disabled= false;
       },
-      () => {
-
-      });
-    return todo;
+      () => {}
+    )
   }
 }
 

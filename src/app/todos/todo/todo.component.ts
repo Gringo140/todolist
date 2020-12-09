@@ -12,6 +12,7 @@ import { Todo } from '../shared/todo.model';
 export class TodoComponent implements OnInit {
 
   public formTodo: FormGroup;
+  public disabled: boolean;
 
   constructor(
     private router: Router,
@@ -20,6 +21,11 @@ export class TodoComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.disabled = true;
+    this.service.get().subscribe(
+      () => {this.disabled = false},
+      () => {this.router.navigate(['/todo'])}
+    );
     this.formTodo = this.fb.group({
       name: ["", Validators.required],
       description: ["", Validators.required]
@@ -28,13 +34,17 @@ export class TodoComponent implements OnInit {
 
   save() {
     if(this.formTodo.valid){
-      this.router.navigate(['/todo']);
-      return this.service.post({
+      this.disabled = true;
+     return this.service.post({
         name: this.formTodo.get('name').value,
         description: this.formTodo.get('description').value
-      });
+      }).subscribe(
+        () => {
+          this.router.navigate(['/todo']);
+          },
+        () => {}
+      )
     }
-
   }
 
 

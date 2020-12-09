@@ -3,7 +3,7 @@ import { Todo } from './todo.model';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 export class TodoServiceService {
 
   public todoList: Todo[];
+  
 
   constructor(private Http: HttpClient) { }
 
@@ -20,7 +21,14 @@ export class TodoServiceService {
         "secret-key": environment.jsonbin.secretKey
       })
     };
-    return this.Http.get<Todo[]>(environment.jsonbin.apiURL, options)
+    return this.Http.get<Todo[]>(environment.jsonbin.apiURL, options).pipe(
+      tap(
+        (todoList: Todo[]) => { this.todoList = todoList},
+        () => {}
+      )
+
+
+    )
   }
 
   post(todo: Todo) {
@@ -31,18 +39,11 @@ export class TodoServiceService {
     });
     todoList.push(todo)
 
-    this.put(todoList).subscribe(
-      () => this.todoList.push(todo),
+    return this.put(todoList).pipe(
+      tap( () => {this.todoList.push(todo)},
       () => {},
-    );
-    return todo;
+    ));
   }
-
-  onDelete(todo: Todo) {
-
-    this.put(this.todoList);
-    return todo;
-  };
 
   put(todoList: Todo[]): Observable<Todo[]> {
     const options = {
@@ -53,5 +54,25 @@ export class TodoServiceService {
       })
     };
     return this.Http.put<Todo[]>(environment.jsonbin.apiURL, todoList, options)
+    
+  }
+
+  delete(todo: Todo): Observable<Todo[]>{
+    const newTodoList = [];
+
+    this.todoList.forEach(element => {
+      if (element !== todo) {
+        newTodoList.push(element)
+      }
+    });
+    return this.put(newTodoList).pipe(
+      tap(
+        ()=>{
+         const index = this.todoList.indexOf(todo);
+         this.todoList.splice(index, 1);
+        },
+        ()=>{}
+      )
+    )
   }
 }

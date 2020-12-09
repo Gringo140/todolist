@@ -1,3 +1,11 @@
+<div *ngIf="!formTodo">
+    <div class="spinner-container">
+        <div class="spinner" name="crescent">
+            <span class="spinner-ball"></span>
+        </div>
+    </div>
+</div>
+
 <form class="form" [formGroup]="formTodo" (ngSubmit)="save()">
     <ion-item>
         <ion-label class="font"><b>Title: </b></ion-label>
@@ -10,5 +18,5 @@
         <ion-label class="font"><b>Description: </b></ion-label>
         <ion-textarea formControlName="description"></ion-textarea>
     </ion-item>
-    <ion-button [disabled]="!this.formTodo.valid" ion-button type="submit">Save</ion-button>
+    <ion-button [disabled]="!this.formTodo.valid || disabled" ion-button type="submit">Save</ion-button>
 </form>
